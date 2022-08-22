@@ -1,0 +1,128 @@
+---
+title: "Ergebnisbericht"
+date: "`r format(Sys.Date(), '%d.%m.%Y')`"
+output: 
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE, 
+  fig.pos = "center", 
+  fig.width = 8
+)
+
+library(targets)
+library(dplyr)
+library(patchwork)
+library(ggplot2)
+
+table_format = function(dat){
+  DT::datatable(dat, filter = "top",
+          #fillContainer = FALSE, 
+          options = list(pageLength = 15, 
+                         autoWidth = TRUE,
+                         dom = 'Bfrtip',
+                         buttons = c('copy', 
+                                     'print'), 
+                         scrollX = TRUE, 
+            selection="multiple"
+          ))
+}
+num_format = . %>% sprintf("%.3f", .)
+```
+
+## Workflow
+
+```{r wf_plot}
+tar_visnetwork(
+  targets_only = TRUE, exclude = c(
+    #"report", 
+    "measure_outer", contains("meta")), 
+  label = c("size", "time"))
+```
+
+## EDA
+
+S. z.B. [R for Data Science, Kapitel 7](https://r4ds.had.co.nz/exploratory-data-analysis.html#exploratory-data-analysis)
+
+### Variation
+
+- Verteilung
+- häufige Werte
+- seltene Werte
+  
+### Fehlende Werte
+
+### Covariation
+
+### Muster und Modelle 
+
+- starke Covariates
+- Cluster
+- Variableneinflluss
+
+
+
+<!--
+### Zusammenhänge
+
+```{r assoc_plot, cache = TRUE, fig.height= 4, eval = F}
+tar_load(eda_assoc_plot)
+gg = eda_assoc_plot %>% unlist(recursive = FALSE)
+gg
+```
+-->
+
+
+## ML-Ergebnisse
+
+```{r tar_load}
+tar_load(bm_plot)
+tar_load(bm_table)
+```
+
+### Klassifikation
+
+#### Plot
+
+```{r bm_plot_classif}
+bm_plot$classif
+```
+
+#### Tabelle
+
+```{r bm_tab_classif}
+bm_table$classif %>% select(-c(nr, iters, time_both))%>%
+  mutate(
+    across(where(is.numeric), num_format),
+    across(where(is.character), factor)
+  ) %>% table_format
+```
+
+
+### Regression
+
+#### Plot
+
+```{r bm_plot_regr}
+bm_plot$regr
+```
+
+
+#### Tabelle
+
+```{r bm_tab_regr}
+bm_table$regr %>% select(-c(nr, iters, time_both))%>%
+  mutate(
+    across(where(is.numeric), num_format),
+    across(where(is.character), factor)
+  ) %>% table_format
+```
+
+
+

@@ -1,0 +1,29 @@
+tar_option_set(
+  packages =  c(
+    "callr",
+    "clustermq",
+    "conflicted",
+    "dplyr",
+    "dplyr",
+    "e1071",
+    "future.callr",
+    "future",
+    "kknn",
+    "magrittr",
+    "mlr3",
+    "mlr3learners",
+    "mlr3measures",
+    "mlr3tuning",
+    "mlr3pipelines",
+    "mlr3viz",
+    "paradox",
+    "qs",
+    "stringr",
+    "tibble",
+    "tidyr",
+    "tidyr",
+    "ggplot2",
+    "GGally",
+    "visNetwork"
+  )
+)

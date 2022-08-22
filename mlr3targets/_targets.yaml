@@ -1,0 +1,3 @@
+usecase_template:
+  script: C:/Users/Asus/Documents/01_code/mlr3targets/__usecases/usecase_template/_targets.R
+  store: C:/Users/Asus/Documents/01_code/mlr3targets/__usecases/usecase_template/_targets
